@@ -17,17 +17,28 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 //SplashScreen.
 public class BaseScreen implements Screen {
 
+    //Declaramos los siguientes atributos que usaremos para el splash screen.
     Image imagenIcon;
-    Stage fondo;
+    Stage fondo, icon;
+    Image bg;
     final MainGame juego;
 
+    //Constructor.
     public BaseScreen(final MainGame juego){
+        //Inicializamos atributos.
         this.juego = juego;
         fondo =new Stage(new ScreenViewport());
+        icon = new Stage(new ScreenViewport());
+
         imagenIcon = new Image(new TextureRegion(new Texture(Gdx.files.internal("icon.png"))));
         imagenIcon.setPosition(Gdx.graphics.getWidth()/2 - imagenIcon.getWidth()/2, Gdx.graphics.getHeight()/2);
 
-        fondo.addActor(imagenIcon);
+        bg = new Image(new TextureRegion(new Texture(Gdx.files.internal("fondoBlanco.jpg"))));
+        bg.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
+        fondo.addActor(bg);
+        icon.addActor(imagenIcon);
     }
 
     @Override
@@ -38,10 +49,14 @@ public class BaseScreen implements Screen {
         fondo.act();
         fondo.draw();
 
-        fondo.addAction(sequence(delay(2f), fadeOut(1.75f), new Action() {
+        icon.act();
+        icon.draw();
+
+        //Tiempo splash.
+        icon.addAction(sequence(delay(2f), fadeOut(1.75f), new Action() {
             @Override
             public boolean act(float delta) {
-                juego.setScreen(new MenuScreen(juego));
+                juego.setScreen(new MenuScreen(juego)); //Empezamos el juego.
                 return true;
             }
         }));

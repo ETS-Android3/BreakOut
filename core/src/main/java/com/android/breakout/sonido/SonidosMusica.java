@@ -5,10 +5,11 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 public class SonidosMusica {
+
+    //Declaramos sonidos/música para el juego y los inicializamos.
     static Music inicio = Gdx.audio.newMusic(Gdx.files.internal("sonidos/home.mp3"));
     static Music subeNivel = Gdx.audio.newMusic(Gdx.files.internal("sonidos/win.mp3"));
     static Music perder = Gdx.audio.newMusic(Gdx.files.internal("sonidos/lose.mp3"));
-    static Music juego = Gdx.audio.newMusic(Gdx.files.internal("sonidos/game.mp3"));
     static Sound knock = Gdx.audio.newSound(Gdx.files.internal("sonidos/knock.wav"));
 
     public static void playInicioMusic() {
@@ -42,15 +43,6 @@ public class SonidosMusica {
 
     public static void stopPerder(){
         perder.stop();
-    }
-
-    public static void playJuego(){
-        juego.play();
-        juego.setLooping(true);
-    }
-
-    public static void stopJuego(){
-        juego.stop();
     }
 
 }

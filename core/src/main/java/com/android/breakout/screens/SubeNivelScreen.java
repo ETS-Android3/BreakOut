@@ -20,8 +20,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class SubeNivelScreen implements Screen {
     int nivel;
     final MainGame juego;
-    Image imgSubeNivel;
-    Stage stage;
+    Image imgSubeNivel, fondo;
+    Stage stage, bg;
 
     public SubeNivelScreen(MainGame juego, int nivel){
         this.juego = juego;
@@ -32,11 +32,19 @@ public class SubeNivelScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
+        bg = new Stage(new ScreenViewport());
+        //Inicializamos atributos, imgs
         imgSubeNivel = new Image(new TextureRegion(new Texture(Gdx.files.internal("juego/subeNivel.png"))));
         imgSubeNivel.setPosition(Gdx.graphics.getWidth()/2 - imgSubeNivel.getWidth()/2, Gdx.graphics.getHeight()/2);
 
+        fondo = new Image(new TextureRegion(new Texture(Gdx.files.internal("juego/fondoJuego.png"))));
+        fondo.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
         //Sonido al subir de nivel.
         SonidosMusica.playSubeNivel();
+
+        bg.addActor(fondo);
         stage.addActor(imgSubeNivel);
     }
 
@@ -45,7 +53,11 @@ public class SubeNivelScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        bg.act();
+        bg.draw();
         stage.act();
+        stage.draw();
+        //Pasa al siguiente nivel.
         stage.addAction(sequence(delay(2f), fadeIn(1.75f), new Action() {
             @Override
             public boolean act(float delta) {

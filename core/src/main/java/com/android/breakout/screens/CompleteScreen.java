@@ -3,6 +3,7 @@ package com.android.breakout.screens;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
+import com.android.breakout.MainGame;
 import com.android.breakout.sonido.SonidosMusica;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -16,24 +17,28 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class CompleteScreen implements Screen {
 
+    //Atributos.
     Stage stage;
     Image fondo, iconComplete;
+    MainGame juego;
 
-    public CompleteScreen(){
+    //Constructor.
+    public CompleteScreen(MainGame juego){
+        this.juego = juego;
         stage = new Stage(new ScreenViewport());
     }
 
     @Override
     public void show() {
+        //Iniciamos atributos.
         fondo = new Image(new TextureRegion(new Texture(Gdx.files.internal("juego/fondoJuego.png"))));
         fondo.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         iconComplete = new Image(new TextureRegion(new Texture(Gdx.files.internal("juego/ganador.png"))));
         iconComplete.setPosition(Gdx.graphics.getWidth()/2 - iconComplete.getWidth()/2, Gdx.graphics.getHeight() / 2);
 
-        // play sound
-        SonidosMusica.playSubeNivel();
 
+        SonidosMusica.playSubeNivel();
         stage.addActor(fondo);
         stage.addActor(iconComplete);
     }
@@ -43,14 +48,15 @@ public class CompleteScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        //Tiempo stage, ganador.
         stage.act();
         stage.addAction(sequence(
-                delay( 4f),       // wait 2 seconds
+                delay( 4f),
                 new Action() {
                     @Override
                     public boolean act(float delta) {
-                        // the last action will move to the next screen
-                        Gdx.app.exit();
+                        SonidosMusica.playSubeNivel();
+                        juego.setScreen(new MenuScreen(juego)); //Retorna al menu.
                         return true;
                     }}));
 

@@ -38,9 +38,11 @@ public class MenuScreen implements Screen {
         botonPlay.setSize(botonPlay.getWidth(), botonPlay.getHeight());
         botonPlay.setPosition(Gdx.graphics.getWidth()/2 - botonPlay.getWidth()/2, Gdx.graphics.getHeight()/2-100);
 
+        //Titulo
         iconImagen = new Image(new TextureRegion((new Texture(Gdx.files.internal("iconText.png")))));
         iconImagen.setPosition(Gdx.graphics.getWidth()/2 - iconImagen.getWidth()/2, Gdx.graphics.getHeight()/2 + iconImagen.getHeight()/3);
 
+        //Empieza juego al pulsar sobre jugar.
         botonPlay.setTouchable(Touchable.enabled);
         botonPlay.addListener(new InputListener(){
             @Override

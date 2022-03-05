@@ -19,12 +19,13 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class GameOverScreen implements Screen {
 
     Image gameOverIcon, fondo;
-    Button jugar, salir;
+    Button jugar, menu;
 
     Stage stage;
     int nivelActual;
     MainGame juego;
 
+    //Constructor.
     public GameOverScreen(MainGame juego, int nivelActual){
         this.juego = juego;
         this.nivelActual = nivelActual;
@@ -32,9 +33,11 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void show() {
+
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
+        //Inicializamos todos los atributos con sus imágenes
         fondo = new Image(new TextureRegion(new Texture(Gdx.files.internal("juego/fondoJuego.png"))));
         fondo.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -46,21 +49,22 @@ public class GameOverScreen implements Screen {
         jugar.setTouchable(Touchable.enabled);
 
 
-        salir = new Button(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("juego/salir.png")))));
-        salir.setSize(salir.getWidth(), salir.getHeight());
-        salir.setPosition(Gdx.graphics.getWidth()/2 - salir.getWidth()/2,
-                Gdx.graphics.getHeight() / 3 - salir.getHeight() - salir.getHeight() / 3);
-        salir.setTouchable(Touchable.enabled);
+        menu = new Button(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("juego/menu.png")))));
+        menu.setSize(menu.getWidth(), menu.getHeight());
+        menu.setPosition(Gdx.graphics.getWidth()/2 - menu.getWidth()/2,
+                Gdx.graphics.getHeight() / 3 - menu.getHeight() - menu.getHeight() / 3);
+        menu.setTouchable(Touchable.enabled);
 
 
         gameOverIcon = new Image(new TextureRegion(new Texture(Gdx.files.internal("juego/lose.png"))));
         gameOverIcon.setPosition(Gdx.graphics.getWidth()/2 - gameOverIcon.getWidth()/2, Gdx.graphics.getHeight() / 2);
 
+        //Botón seguir jugando
         jugar.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 SonidosMusica.stopPerder();
-                juego.setScreen(new BreakOut(juego, nivelActual));
+                juego.setScreen(new BreakOut(juego, nivelActual));//Seguir jugando
             }
 
             @Override
@@ -69,10 +73,12 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        salir.addListener(new InputListener() {
+        //Botón salir, menú.
+        menu.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
+                SonidosMusica.stopPerder();
+                juego.setScreen(new MenuScreen(juego)); //Volvemos al menú.
             }
 
             @Override
@@ -85,7 +91,7 @@ public class GameOverScreen implements Screen {
 
         stage.addActor(fondo);
         stage.addActor(jugar);
-        stage.addActor(salir);
+        stage.addActor(menu);
         stage.addActor(gameOverIcon);
     }
 

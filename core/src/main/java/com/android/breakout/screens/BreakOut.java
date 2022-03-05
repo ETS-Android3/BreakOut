@@ -9,6 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.GLTexture;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -58,7 +60,6 @@ public class BreakOut implements Screen {
 
         //Silenciamos musica de inicio.
         SonidosMusica.stopInicioMusic();
-        SonidosMusica.stopJuego();
 
         //Fondo del juego.
         fondo = new Image(new TextureRegion(new Texture(Gdx.files.internal("juego/fondoJuego.png"))));
@@ -115,12 +116,12 @@ public class BreakOut implements Screen {
 
     public void niveles(float brickWidth, float brickHeight) {
         String fileLevel = "nivel/nivel" + nivelActual + ".txt"; //Cargamos orden de bricks con un archivo txt.
-        int totalRows = 20;
-        int totalCols = 20;
+        int totalRows = 6;
+        int totalCols = 6;
 
         //Margin x e y de los bricks.
-        float marginX = (width - totalCols*brickWidth) / 2;
-        float marginY = (height - totalRows*brickHeight) - 300;
+        float marginX = (width - totalCols*brickWidth-650) /4;
+        float marginY = (height - totalRows*brickHeight) - 390;
 
         //Lectura del archivo txt para el posicionamiento, número y tipo de bricks.
         try {
@@ -178,7 +179,6 @@ public class BreakOut implements Screen {
         //Al perder.
         else {
             stage.clear();
-            SonidosMusica.stopJuego();
             juego.setScreen(new GameOverScreen(juego, nivelActual));
             dispose();
         }
@@ -186,7 +186,6 @@ public class BreakOut implements Screen {
         //Si el nivel haa sido completado, hay dos opciones.
         if (completado) {
             stage.clear();
-            SonidosMusica.stopJuego();
             //En caso de que no se haya llegado al nivel 4 que es el nivel máximo, pasaría al siguiente nivel.
             if (nivelActual < maxNivel) {
                 stage.clear();
@@ -196,7 +195,7 @@ public class BreakOut implements Screen {
             //En caso contrario, el juego ha terminado.
             else {
                 stage.clear();
-                juego.setScreen(new CompleteScreen());//Lanzamos pantalla de juego completado.
+                juego.setScreen(new CompleteScreen(juego));//Lanzamos pantalla de juego completado.
             }
         }
     }
@@ -283,14 +282,14 @@ public class BreakOut implements Screen {
         pelota.movimiento();
 
         //Medidas pelota, funcionamiento.
-        if(pelota.getX() >= width - drcPant.getWidth() - pelota.getWidth() || pelota.getX() < izqPant.getWidth()) {
+        if(pelota.getX() > width - drcPant.getWidth() - pelota.getWidth() || pelota.getX() < izqPant.getWidth()) {
             pelota.setAngulo(180 - pelota.getAngulo());
         }
-        if(pelota.getY() >= height - arPant.getHeight() - pelota.getHeight()) {
+        if(pelota.getY() > height - arPant.getHeight() - pelota.getHeight()) {
             pelota.setAngulo(pelota.getAngulo() + (180 - 2 * (90 - (180 - pelota.getAngulo()))));
         }
 
-        //Si la pelota hace contacto con la superficie del suelo, pierde.
+        //Si la pelota hace contacto con la superficie del suelo, pierde(menor 0).
         if(pelota.getY() < 0) perder = true;
     }
 

@@ -6,7 +6,7 @@
 	<application
 			android:allowBackup="true"
         	android:fullBackupContent="true"
-			android:icon="@android:drawable/gallery_thumb"
+			android:icon="@drawable/icon"
 			android:isGame="true"
 			android:appCategory="game"
         	android:label="BreakOut"
