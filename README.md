@@ -1,5 +1,7 @@
 # breakout
 
+Me he guiado del vídeo https://www.youtube.com/watch?v=kEEk6zbmJ78 donde muestra de forma visual el funcionamiento de este juego.
+
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff).
 
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
